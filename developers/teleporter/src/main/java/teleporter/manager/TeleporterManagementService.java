@@ -28,13 +28,19 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public List<String> citiesInRange(String startingCity, int numOfJumps) {
-        List<String> citiesInRange = new ArrayList<>();
+        Set<String> citiesInRange = new HashSet<>();
 
         if(cityToDestinationsMap.get(startingCity) != null) {
             citiesInRange.addAll(cityToDestinationsMap.get(startingCity));
+            if(numOfJumps > 1){
+                for(String city : cityToDestinationsMap.get(startingCity)){
+                   citiesInRange.addAll(citiesInRange(city, numOfJumps-1));
+                }
+            }
         }
-        
-        return citiesInRange;
+
+        citiesInRange.remove(startingCity);
+        return new ArrayList<>(citiesInRange);
     }
 
     @Override

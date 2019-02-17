@@ -52,4 +52,51 @@ public class TeleporterManagmentServiceRangeTest {
         Assert.assertTrue(citiesInRange.contains("Moscow"));
         Assert.assertTrue(citiesInRange.contains("Tokyo"));
     }
+
+    @Test
+    public void givenTwoCitiesInTwoJumpsRangeReturnBothCitiesInList(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Tokyo", "Los Angeles");
+        teleporterManager.addRoute("Los Angeles", "Moscow");
+
+        List<String> citiesInRange = teleporterManager.citiesInRange("Tokyo", 2);
+
+        Assert.assertEquals(2, citiesInRange.size());
+        Assert.assertTrue(citiesInRange.contains("Moscow"));
+        Assert.assertTrue(citiesInRange.contains("Los Angeles"));
+    }
+
+    @Test
+    public void givenMultipleCitiesInTwoJumpsRangeReturnAllCitiesInList(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Tokyo", "Los Angeles");
+        teleporterManager.addRoute("Tokyo", "Las Vegas");
+        teleporterManager.addRoute("Los Angeles", "Moscow");
+        teleporterManager.addRoute("Newark", "Las Vegas");
+        teleporterManager.addRoute("Houghton", "Newark");
+
+        List<String> citiesInRange = teleporterManager.citiesInRange("Tokyo", 2);
+
+        Assert.assertEquals(4, citiesInRange.size());
+        Assert.assertTrue(citiesInRange.contains("Moscow"));
+        Assert.assertTrue(citiesInRange.contains("Los Angeles"));
+        Assert.assertTrue(citiesInRange.contains("Newark"));
+        Assert.assertTrue(citiesInRange.contains("Las Vegas"));
+    }
+
+    @Test
+    public void givenMultipleCitiesInFourJumpsRangeReturnAllThreeJumpCitiesInList(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Tokyo", "Los Angeles");
+        teleporterManager.addRoute("Los Angeles", "Moscow");
+        teleporterManager.addRoute("Newark", "Moscow");
+        teleporterManager.addRoute("Houghton", "Newark");
+
+        List<String> citiesInRange = teleporterManager.citiesInRange("Tokyo", 3);
+
+        Assert.assertEquals(3, citiesInRange.size());
+        Assert.assertTrue(citiesInRange.contains("Moscow"));
+        Assert.assertTrue(citiesInRange.contains("Los Angeles"));
+        Assert.assertTrue(citiesInRange.contains("Newark"));
+    }
 }
