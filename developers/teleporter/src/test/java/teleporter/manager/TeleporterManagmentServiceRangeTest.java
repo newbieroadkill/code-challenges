@@ -16,4 +16,15 @@ public class TeleporterManagmentServiceRangeTest {
          Assert.assertNotNull("Method should not return null", citiesInRange);
          Assert.assertEquals(0, citiesInRange.size());
      }
+
+    @Test
+    public void givenOneCitiesInRangeReturnCityInList(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Kiev", "Moscow");
+
+        List<String> citiesInRange = teleporterManager.citiesInRange("Moscow", 1);
+
+        Assert.assertEquals(1, citiesInRange.size());
+        Assert.assertTrue(citiesInRange.contains("Kiev"));
+    }
 }
