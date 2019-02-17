@@ -3,28 +3,35 @@ package teleporter.manager;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TeleporterManagementService implements TeleporterManager {
 
-    private HashSet<String> cities = new HashSet<>();
+    private Map<String, Set<String>> cityToDestinationsMap = new HashMap<>();
 
     @Override
     public void addRoute(String city1, String city2) {
-         cities.add(city1);
-         cities.add(city2);
+         addCityToCityRoute(city1, city2);
+         addCityToCityRoute(city2, city1);
+    }
+
+    private void addCityToCityRoute(String startingCity, String destinationCity){
+        if(cityToDestinationsMap.containsKey(startingCity)){
+            cityToDestinationsMap.get(startingCity).add(destinationCity);
+        } else {
+            Set<String> destinations = new HashSet<>();
+            destinations.add(destinationCity);
+            cityToDestinationsMap.put(startingCity, destinations);
+        }
     }
 
     @Override
     public List<String> citiesInRange(String startingCity, int numOfJumps) {
         List<String> citiesInRange = new ArrayList<>();
 
-        if(cities.contains(startingCity)){
-            citiesInRange.addAll(cities);
-            citiesInRange.remove(startingCity);
+        if(cityToDestinationsMap.get(startingCity) != null) {
+            citiesInRange.addAll(cityToDestinationsMap.get(startingCity));
         }
         
         return citiesInRange;
@@ -40,3 +47,4 @@ public class TeleporterManagementService implements TeleporterManager {
         return false;
     }
 }
+
