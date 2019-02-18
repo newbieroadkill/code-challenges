@@ -70,7 +70,7 @@ public class TeleporterManagementService implements TeleporterManager {
     }
 
     private boolean findLoop(String startingCity, String currentCity, Set<String> visitedCities){
-        if(currentCity == startingCity && visitedCities.size() >= 3){
+        if(currentCity.equals(startingCity) && visitedCities.size() >= 3){
             return true;
         } else if (visitedCities.contains(currentCity)){
             return false;
