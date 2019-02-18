@@ -45,10 +45,18 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public boolean cityReachable(String startingCity, String destinationCity) {
-        if(cityToDestinationsMap.get(startingCity) == null){
-            return false;
+        boolean foundDestinationCity = false;
+        if(cityToDestinationsMap.get(startingCity) == null || cityToDestinationsMap.get(destinationCity) == null){
+            foundDestinationCity = false;
+        } else if (cityToDestinationsMap.get(startingCity).contains(destinationCity)){
+            foundDestinationCity = true;
+        } else {
+            foundDestinationCity = false;
+            for(String city : cityToDestinationsMap.get(startingCity)){
+                foundDestinationCity = foundDestinationCity || cityReachable(city, destinationCity);
+            }
         }
-        return cityToDestinationsMap.get(startingCity).contains(destinationCity);
+        return foundDestinationCity;
     }
 
     @Override
