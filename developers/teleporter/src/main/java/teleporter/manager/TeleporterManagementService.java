@@ -66,14 +66,23 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public boolean loopPoosible(String startingCity) {
-        int numberOfExitsToCity = 0;
-        for(Set<String> destinations : cityToDestinationsMap.values()){
-            if(destinations.contains(startingCity)){
-                numberOfExitsToCity++;
+        return findLoop(startingCity, startingCity, new HashSet<>());
+    }
+
+    private boolean findLoop(String startingCity, String currentCity, Set<String> visitedCities){
+        if(currentCity == startingCity && visitedCities.size() >= 3){
+            return true;
+        } else if (visitedCities.contains(currentCity)){
+            return false;
+        }
+        visitedCities.add(currentCity);
+        for(String city : cityToDestinationsMap.get(currentCity)){
+            if(findLoop(startingCity, city, visitedCities)){
+                return true;
             }
         }
-
-        return numberOfExitsToCity > 1;
+        visitedCities.remove(currentCity);
+        return false;
     }
 }
 
