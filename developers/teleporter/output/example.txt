@@ -1,0 +1,6 @@
+cities from Summerton in 1 jumps: Springton, Hemingway
+cities from Summerton in 2 jumps: Springton, Hemingway, Fortuna, Chesterfield
+can I teleport from Springton to Atlantis: yes
+can I teleport from Oaktown to Atlantis: no
+loop possible from Oaktown: no
+loop possible from Fortuna: no
