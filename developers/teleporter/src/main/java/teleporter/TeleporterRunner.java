@@ -64,14 +64,6 @@ public class TeleporterRunner implements CommandLineRunner{
                 }
             }
         }
-
-
-               //Add to the teleporter
-
-               //Create appropriate output
-
-
-
-
+        
     }
 }
