@@ -46,4 +46,17 @@ public class TeleporterManagementServiceReachableTest {
 
         Assert.assertTrue(canReachCity);
     }
+
+    @Test
+    public void givenUnreachableCityWithCycleOnStartingCityReturnFalse(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Kiev", "Moscow");
+        teleporterManager.addRoute("Warsaw", "Kiev");
+        teleporterManager.addRoute("Warsaw", "Moscow");
+        teleporterManager.addRoute("Tokyo", "Los Angeles");
+
+        boolean canReachCity = teleporterManager.cityReachable("Moscow", "Los Angeles");
+
+        Assert.assertFalse(canReachCity);
+    }
 }

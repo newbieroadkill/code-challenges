@@ -45,15 +45,39 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public boolean cityReachable(String startingCity, String destinationCity) {
-        boolean foundDestinationCity = false;
         if(cityToDestinationsMap.get(startingCity) == null || cityToDestinationsMap.get(destinationCity) == null){
-            foundDestinationCity = false;
-        } else if (cityToDestinationsMap.get(startingCity).contains(destinationCity)){
+            return false;
+        }
+        // return cityReachable(startingCity, destinationCity, new HashSet<String>());
+        Set<String> reachableCities = new HashSet<>();
+        reachableCitiesWithJumpLimit(startingCity, reachableCities, cityToDestinationsMap.size() -1);
+        return reachableCities.contains(destinationCity);
+    }
+
+    private void reachableCitiesWithJumpLimit(String currentCity, Set reachableCities, int numOfJumps){
+        if(reachableCities.containsAll(cityToDestinationsMap.get(currentCity))){
+            return;
+        }
+
+        reachableCities.addAll(cityToDestinationsMap.get(currentCity));
+
+        if(numOfJumps > 1) {
+            for(String city : cityToDestinationsMap.get(currentCity)){
+                reachableCitiesWithJumpLimit(city, reachableCities, numOfJumps - 1);
+            }
+        }
+    }
+
+    private boolean cityReachable(String startingCity, String destinationCity, Set visitedCities) {
+        boolean foundDestinationCity = false;
+        if (cityToDestinationsMap.get(startingCity).contains(destinationCity)) {
             foundDestinationCity = true;
-        } else {
+        } else if (visitedCities.containsAll(cityToDestinationsMap.get(startingCity))) {
             foundDestinationCity = false;
-            for(String city : cityToDestinationsMap.get(startingCity)){
-                foundDestinationCity = foundDestinationCity || cityReachable(city, destinationCity);
+        } else {
+            visitedCities.addAll(cityToDestinationsMap.get(startingCity));
+            for (String city : cityToDestinationsMap.get(startingCity)) {
+                foundDestinationCity = foundDestinationCity || cityReachable(city, destinationCity, visitedCities);
             }
         }
         return foundDestinationCity;
