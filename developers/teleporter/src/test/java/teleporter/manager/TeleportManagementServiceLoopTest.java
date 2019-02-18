@@ -17,4 +17,28 @@ public class TeleportManagementServiceLoopTest {
         Assert.assertTrue(loopExists);
     }
 
+    @Test
+    public void givenLoopDoesNotExistReturnFalse(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Kiev", "Moscow");
+        teleporterManager.addRoute("Warsaw", "Moscow");
+        teleporterManager.addRoute("Warsaw", "Baltimore");
+
+        boolean loopExists = teleporterManager.loopPoosible("Kiev");
+
+        Assert.assertFalse(loopExists);
+    }
+
+    @Test
+    public void givenLoopDoesNotExistWithMulitlpeDestinationsReturnFalse(){
+        TeleporterManager teleporterManager = new TeleporterManagementService();
+        teleporterManager.addRoute("Kiev", "Moscow");
+        teleporterManager.addRoute("Kiev", "Tokyo");
+        teleporterManager.addRoute("Warsaw", "Moscow");
+        teleporterManager.addRoute("Warsaw", "Baltimore");
+        
+        boolean loopExists = teleporterManager.loopPoosible("Kiev");
+
+        Assert.assertFalse(loopExists);
+    }
 }

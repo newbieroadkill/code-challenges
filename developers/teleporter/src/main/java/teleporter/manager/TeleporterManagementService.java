@@ -66,7 +66,14 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public boolean loopPoosible(String startingCity) {
-        return true;
+        int numberOfExitsToCity = 0;
+        for(Set<String> destinations : cityToDestinationsMap.values()){
+            if(destinations.contains(startingCity)){
+                numberOfExitsToCity++;
+            }
+        }
+
+        return numberOfExitsToCity > 1;
     }
 }
 
