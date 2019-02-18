@@ -30,16 +30,11 @@ public class TeleporterManagementService implements TeleporterManager {
     public List<String> citiesInRange(String startingCity, int numOfJumps) {
         Set<String> citiesInRange = new HashSet<>();
 
-        if(cityToDestinationsMap.get(startingCity) != null) {
-            citiesInRange.addAll(cityToDestinationsMap.get(startingCity));
-            if(numOfJumps > 1){
-                for(String city : cityToDestinationsMap.get(startingCity)){
-                   citiesInRange.addAll(citiesInRange(city, numOfJumps-1));
-                }
-            }
+        if(cityToDestinationsMap.containsKey(startingCity)){
+            reachableCitiesWithJumpLimit(startingCity, citiesInRange, numOfJumps);
+            citiesInRange.remove(startingCity);
         }
 
-        citiesInRange.remove(startingCity);
         return new ArrayList<>(citiesInRange);
     }
 
@@ -48,9 +43,10 @@ public class TeleporterManagementService implements TeleporterManager {
         if(cityToDestinationsMap.get(startingCity) == null || cityToDestinationsMap.get(destinationCity) == null){
             return false;
         }
-        // return cityReachable(startingCity, destinationCity, new HashSet<String>());
+
         Set<String> reachableCities = new HashSet<>();
         reachableCitiesWithJumpLimit(startingCity, reachableCities, cityToDestinationsMap.size() -1);
+
         return reachableCities.contains(destinationCity);
     }
 
@@ -66,21 +62,6 @@ public class TeleporterManagementService implements TeleporterManager {
                 reachableCitiesWithJumpLimit(city, reachableCities, numOfJumps - 1);
             }
         }
-    }
-
-    private boolean cityReachable(String startingCity, String destinationCity, Set visitedCities) {
-        boolean foundDestinationCity = false;
-        if (cityToDestinationsMap.get(startingCity).contains(destinationCity)) {
-            foundDestinationCity = true;
-        } else if (visitedCities.containsAll(cityToDestinationsMap.get(startingCity))) {
-            foundDestinationCity = false;
-        } else {
-            visitedCities.addAll(cityToDestinationsMap.get(startingCity));
-            for (String city : cityToDestinationsMap.get(startingCity)) {
-                foundDestinationCity = foundDestinationCity || cityReachable(city, destinationCity, visitedCities);
-            }
-        }
-        return foundDestinationCity;
     }
 
     @Override
