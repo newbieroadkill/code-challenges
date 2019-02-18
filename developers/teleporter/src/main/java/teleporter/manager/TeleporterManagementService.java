@@ -66,7 +66,7 @@ public class TeleporterManagementService implements TeleporterManager {
 
     @Override
     public boolean loopPoosible(String startingCity) {
-        return false;
+        return true;
     }
 }
 
